@@ -1,0 +1,4 @@
+   # ????? MIME ????????
+    location ~* \.(js|mjs|ts)$ {
+        add_header Content-Type application/javascript;
+    }
