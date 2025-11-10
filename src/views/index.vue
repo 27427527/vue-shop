@@ -1,28 +1,10 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
-
-import Swiper from "./swiper/index.vue";
-import Product from "./product/index.vue";
-
-
-
+import Featured from "./good/featured.vue";
 </script>
 
 <template>
-  <div>
-  
-    <Swiper />
-
-    <Product />
-
-
-
-  </div>
+  <Featured />
 </template>
 
-<style scoped>
-p {
-  font-size: 18px;
-  color: #000;
-}
-</style>
+<style scoped></style>

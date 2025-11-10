@@ -4,7 +4,7 @@ import Api from "../services/api.ts";
 
 export const useBannerStore = defineStore("banner", {
   state: () => ({
-    banners: [{ image: "/img/default.jpg" }],
+    banners: [],
     loading: false,
     error: null,
   }),

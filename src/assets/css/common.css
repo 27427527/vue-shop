@@ -1,18 +1,45 @@
 /* 全局背景、字体、字号、颜色、行高、页边距等 */
 html {
   -webkit-text-size-adjust: none;
+
 }
 
 * {
   margin: 0px;
   padding: 0px;
 
+
 }
 
-.w {
-  max-width: 1280px;
+img {
+  max-width: 100% !important;
+  max-height: 100% !important;
+}
+
+a {
+  text-decoration: none !important;
+  color: #000;
+}
+
+.h30 {
+  height: 30px;
+  opacity: 0;
+}
+
+.h59 {
+  height: 59px;
+}
+
+.w1320 {
+  max-width: 1320px;
   margin: 0 auto;
 }
+
+#app {
+  background-color: #ffe7d9;
+}
+
+
 
 body {
   margin: 0px;
@@ -20,6 +47,7 @@ body {
   font-size: 14px;
   color: #000;
   font-family: tahoma, arial, 微软雅黑, 宋体, sans-serif !important;
+
 }
 
 /* CSS3盒子模型 */
@@ -69,7 +97,7 @@ textarea {
 /* 公共匹配样式 */
 * {
   outline: none;
-  background-color: #fff;
+
 }
 
 a,

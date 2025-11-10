@@ -1,23 +1,29 @@
 <script setup lang="ts">
-import { ref,computed} from "vue";
+import { ref, computed } from "vue";
 
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { Navigation, Pagination, Autoplay, EffectFade } from "swiper/modules";
-import { useBannerStore } from "@/stores/banner"
+import { useBannerStore } from "@/stores/banner";
 // Import Swiper styles
 import "swiper/css/bundle";
 const modules = [Autoplay, EffectFade, Navigation];
 
-const bannerstore = useBannerStore()
-bannerstore.getBanners()
-let swiperlist =computed(() => bannerstore.banners) 
-console.log(swiperlist)
+const bannerstore = useBannerStore();
+
+let swiperlist = computed(() => bannerstore.banners);
 
 let state = ref(true);
 </script>
 
 <template>
-  <div id="swiper" @mouseover="state = true" @mouseleave="state = false">
+  <div class="container h30"></div>
+
+  <div
+    class="w1320"
+    id="swiper"
+    @mouseover="state = true"
+    @mouseleave="state = false"
+  >
     <div class="swiper-content">
       <swiper
         :modules="modules"
@@ -45,6 +51,9 @@ let state = ref(true);
 <style scoped>
 .swiper-container {
   width: 100%;
+}
 
+.swiper-slide img {
+  width: 100%;
 }
 </style>

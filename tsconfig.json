@@ -1,5 +1,6 @@
 {
   "files": [],
+  "skipLibCheck": true, // 添加这一行
   "references": [
     {
       "path": "./tsconfig.node.json"
