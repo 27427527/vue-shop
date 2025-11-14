@@ -45,7 +45,8 @@ export const useGoodStore = defineStore("good", {
           // 默认选中属性
           let select_arr = [];
           let i = 0;
-          let obj = JSON.parse(default_prices.attr);
+          // let obj = JSON.parse(default_prices.attr);
+          let obj = default_prices.attr;
 
           for (let name in obj) {
             select_arr[i] = [name, obj[name]];
@@ -61,9 +62,9 @@ export const useGoodStore = defineStore("good", {
           for (let item of dis_prices) {
             let arr = [];
 
-            let obj = JSON.parse(item);
-            for (let key in obj) {
-              arr.push(obj[key]);
+            // let obj = JSON.parse(item);
+            for (let key in item) {
+              arr.push(item[key]);
             }
             temp.push(arr);
           }

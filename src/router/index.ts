@@ -38,9 +38,31 @@ const router = createRouter({
       component: () => import("@/views/cart/index.vue"),
     },
     {
+      path: "/orderconfirm",
+      name: "orderconfirm",
+      component: () => import("@/views/order/orderconfirm.vue"),
+    },
+    {
       path: "/post",
       name: "post",
       component: () => import("@/views/post/index.vue"),
+    },
+    {
+      path: "/user",
+      name: "user",
+      component: () => import("@/views/user/index.vue"),
+      children: [
+        {
+          path: "order",
+          name: "order",
+          component: () => import("@/views/order/index.vue"),
+        },
+        {
+          path: "address",
+          name: "address",
+          component: () => import("@/views/address/index.vue"),
+        },
+      ],
     },
   ],
 });

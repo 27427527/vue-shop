@@ -3,7 +3,7 @@
     <div id="vueCarousel" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-indicators">
         <button
-          v-for="(slide, index) in good.images"
+          v-for="(slide, index) in item"
           :key="index"
           type="button"
           :data-bs-target="'#vueCarousel'"
@@ -15,7 +15,7 @@
 
       <div class="carousel-inner">
         <div
-          v-for="(slide, index) in good.images"
+          v-for="(slide, index) in item"
           :key="index"
           class="carousel-item"
           :class="{ active: currentIndex === index }"
@@ -35,7 +35,7 @@
 
     <!-- 缩略图 -->
     <div class="row mt-3">
-      <div v-for="(image, index) in good.images" :key="index" class="col-3">
+      <div v-for="(image, index) in item" :key="index" class="col-3">
         <img
           :src="'http://lshop/storage/' + image"
           class="img-thumbnail"
@@ -62,12 +62,20 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, computed } from "vue";
-import { useGoodStore } from "@/stores/good";
-const goodstore = useGoodStore();
+import {
+  ref,
+  onMounted,
+  onUnmounted,
+  computed,
+  defineProps,
+  defineEmits,
+} from "vue";
 
-const good = computed(() => {
-  return goodstore.good_details;
+const props = defineProps({
+  item: {
+    type: Object,
+    required: true,
+  },
 });
 
 import { Carousel } from "bootstrap";

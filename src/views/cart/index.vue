@@ -145,6 +145,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { useCart } from "@/composables/useCart.js";
 import { Modal } from "bootstrap";
 import CartItem from "@/components/CartItem.vue";
@@ -153,6 +154,7 @@ import { useCartStore } from "@/stores/cart";
 import { useGoodStore } from "@/stores/good";
 const cartstore = useCartStore();
 const goodstore = useGoodStore();
+const router = useRouter();
 goodstore.getFeatured();
 
 const {
@@ -177,8 +179,7 @@ const grandTotal = computed(() => {
 
 // 处理结算
 const handleCheckout = () => {
-  const modal = new Modal(document.getElementById("checkoutModal"));
-  modal.show();
+  router.push("/orderconfirm?from=cart");
 };
 
 // 确认结算

@@ -6,7 +6,7 @@
 
       <!-- 商品图片区域 -->
       <div class="col-md-6">
-        <Swiper />
+        <Swiper :item="good.images" />
       </div>
       <!-- 商品信息区域 -->
       <div class="col-md-6">
@@ -54,8 +54,8 @@
               :key="i"
               :disabled="dis_arr.find((item) => item === val.name)"
               class="spec-option"
-              :class="{ active: select_arr[index][1] == val.name }"
-              @click="selectAttr(index, item.name, val.name)"
+              :class="{ active: selectarr.find((item) => item === val.name) }"
+              @click="selectAttr(item.name, val.name)"
             >
               {{ val.name }}
             </button>
@@ -246,12 +246,27 @@
 import { ref, computed, watch, watchEffect, onMounted, toRaw } from "vue";
 import { useGoodStore } from "@/stores/good";
 import { useCartStore } from "@/stores/cart";
+
 import { useCart } from "@/composables/useCart.js";
-import { useRoute } from "vue-router";
+import { useOrder } from "@/composables/useOrder.js";
+import { useRoute, useRouter } from "vue-router";
 import Swiper from "@/components/swiper.vue";
 import DOMPurify from "dompurify";
+import { useUserStore } from "@/stores/user";
+import { ElMessage } from "element-plus";
+const open = (msg) => {
+  ElMessage({
+    message: msg,
+    grouping: true,
+    type: "success",
+  });
+};
+const userstore = useUserStore();
+const auth = computed(() => userstore.auth);
 const route = useRoute();
+const router = useRouter();
 const goodstore = useGoodStore();
+
 const cartstore = useCartStore();
 
 const good_id = ref(route.query.good_id);
@@ -261,11 +276,22 @@ const good = computed(() => {
   return goodstore.good_details;
 });
 
+const selectarr = computed(() => {
+  let arr = [];
+
+  for (let item of goodstore.select_list) {
+    Array.prototype.push.apply(arr, item);
+  }
+
+  return arr;
+});
+
 const description = computed(() => {
   return DOMPurify.sanitize(goodstore.good_details.description);
 });
 
 const { addToCart: addcart, totalItems } = useCart();
+const { addToOrder: addorder, Order } = useOrder();
 cartstore.number = totalItems;
 // 使用 watch 监听 good_id 的变化
 watch(
@@ -331,21 +357,23 @@ const dis_arr = computed(() => {
   return goodstore.dis_arr;
 });
 
-function selectAttr(index, name, val) {
-  goodstore.select_list[index] = [name, val];
-
-  setTimeout(function () {
+function selectAttr(name, val) {
+  let i = 0;
+  for (let item of goodstore.select_list) {
+    if (item[0] == name) {
+      goodstore.select_list[i][1] = val;
+    }
+    i++;
+  }
+  setTimeout(() => {
     selectPrice();
   }, 100);
-
-  setTimeout(function () {
+  setTimeout(() => {
     goodstore.dis_price();
-  }, 100);
+  }, 200);
 }
 
 // 选中的属性的价格库存为0的
-
-function disPrice() {}
 
 // 选中的属性的价格
 //  select_arr[index][1] == val.name
@@ -353,12 +381,11 @@ function selectPrice() {
   goodstore.good_details.attr_prices.forEach(function (item, index) {
     let flag = false;
     let i = 0;
-    let obj = JSON.parse(item.attr);
+    let obj = item.attr;
 
     for (let name in obj) {
       let attr_name = goodstore.select_list[i][0];
       let attr_val = goodstore.select_list[i][1];
-
       if (attr_name == name && attr_val == obj[name]) {
         flag = true;
       } else {
@@ -389,27 +416,38 @@ const decreaseQuantity = () => {
 };
 
 const addToCart = () => {
-  let str = "";
-
-  for (let item of goodstore.select_list) {
-    str += item[0] + ":" + item[1] + " ";
-  }
   let product = {
     good_id: good.value.good_id,
     name: good.value.name,
     price: goodstore.price_list[0],
     image: "http://lshop/storage/" + good.value.image,
-    category: str,
+    category: JSON.stringify(select_arr.value),
     stock: goodstore.price_list[2],
   };
 
   addcart(product, quantity.value);
 
-  alert(`已添加 ${quantity.value} 件商品到购物车`);
+  open(`已添加 ${quantity.value} 件商品到购物车`);
 };
 
 const buyNow = () => {
-  alert(`立即购买 ${quantity.value} 件商品`);
+  if (!auth.value) {
+    alert(`跳转登录界面`);
+  } else {
+    let new_good = {
+      good_id: good.value.good_id,
+      name: good.value.name,
+      quantity: quantity.value,
+      price: goodstore.price_list[0],
+      image: "http://lshop/storage/" + good.value.image,
+      category: select_arr.value,
+      stock: goodstore.price_list[2],
+    };
+    console.log(new_good);
+    addorder(new_good);
+
+    router.push("/orderconfirm");
+  }
 };
 </script>
 <style scoped>

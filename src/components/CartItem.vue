@@ -10,7 +10,7 @@
         <!-- 商品信息 -->
         <div class="col-md-4">
           <h5 class="card-title mb-1">{{ item.name }}</h5>
-          <p class="text-muted mb-0">{{ item.category }}</p>
+          <p class="text-muted mb-0">{{ item.spec }}</p>
           <p class="text-success mb-0">库存: {{ item.stock }}</p>
         </div>
 
@@ -65,6 +65,27 @@
 
 <script setup>
 import { defineProps, defineEmits } from "vue";
+function isEmpty(value) {
+  // 检查 null 和 undefined
+  if (value == null) return true;
+
+  // 检查数字
+  if (typeof value === "number") return value === 0 || isNaN(value);
+
+  // 检查布尔值
+  if (typeof value === "boolean") return false;
+
+  // 检查字符串
+  if (typeof value === "string") return value.trim() === "";
+
+  // 检查数组
+  if (Array.isArray(value)) return value.length === 0;
+
+  // 检查对象
+  if (typeof value === "object") return Object.keys(value).length === 0;
+
+  return false;
+}
 
 const props = defineProps({
   item: {

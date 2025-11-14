@@ -5,6 +5,7 @@ import api from "../services/api.ts";
 export const useUserStore = defineStore("user", {
   state: () => ({
     users: {},
+    address_list: [],
     auth: false,
     loading: false,
     error: null,
@@ -16,7 +17,8 @@ export const useUserStore = defineStore("user", {
       this.loading = true;
       try {
         const response = await api.get("/user");
-        this.users = response.data;
+        this.users = response.data.user;
+        this.address_list = response.data.address_list;
       } catch (err: any) {
         this.error = err.message;
       } finally {

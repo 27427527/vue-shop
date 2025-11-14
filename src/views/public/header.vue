@@ -146,8 +146,8 @@ const hasSubItems = (item) => {
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
               <li>
-                <router-link class="dropdown-item" to="/profile"
-                  ><i class="bi bi-person"></i> 个人资料</router-link
+                <router-link class="dropdown-item" to="/user/order"
+                  ><i class="bi bi-person"></i> 个人中心</router-link
                 >
               </li>
               <li>
