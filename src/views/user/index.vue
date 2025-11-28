@@ -3,18 +3,25 @@
   <div class="user-center-container">
     <!-- 用户头部信息 -->
 
+    <div class="user-profile"></div>
+
     <div class="user-header">
       <div class="user-info">
-        <img :src="userInfo.avatar" alt="用户头像" class="user-avatar" />
+        <AvatarCropper />
+
         <div class="user-details">
-          <h2>{{ userInfo.name }}</h2>
+          <h2>{{ users.name }}</h2>
+
           <p>
-            会员等级: {{ userInfo.level }} | 注册时间:
-            {{ userInfo.registerTime }}
+            邮箱账号:
+            {{ users.email }}
+          </p>
+          <p>
+            会员等级: 1 | 注册时间:
+            {{ $formatDate(users.created_at) }}
           </p>
         </div>
       </div>
-      <el-button type="primary" size="small">编辑资料</el-button>
     </div>
 
     <!-- 主要内容区 -->
@@ -23,8 +30,14 @@
       <div class="sidebar">
         <el-menu class="el-menu-vertical-demo">
           <el-menu-item index="1">
-            <el-icon><User /></el-icon>
-            <span>个人信息</span>
+            <router-link
+              class="nav-link"
+              to="/user/info"
+              active-class="is-active"
+            >
+              <el-icon><User /></el-icon>
+              <span>个人信息</span></router-link
+            >
           </el-menu-item>
 
           <el-menu-item index="2">
@@ -37,6 +50,7 @@
               <span>我的订单</span></router-link
             >
           </el-menu-item>
+
           <el-menu-item index="3">
             <router-link
               class="nav-link"
@@ -59,10 +73,10 @@
             <span>账户余额</span>
           </el-menu-item> -->
 
-          <el-menu-item index="7">
+          <!-- <el-menu-item index="7">
             <el-icon><ChatDotRound /></el-icon>
             <span>消息中心</span>
-          </el-menu-item>
+          </el-menu-item> -->
         </el-menu>
       </div>
 
@@ -86,14 +100,12 @@ import {
   ChatDotRound,
 } from "@element-plus/icons-vue";
 import { RouterLink, RouterView } from "vue-router";
-const activeMenu = ref("1");
+import { useUserStore } from "@/stores/user";
 
-// 用户信息
-const userInfo = ref({
-  name: "张小明",
-  avatar: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
-  level: "黄金会员",
-  registerTime: "2022-05-10",
+const userstore = useUserStore();
+
+const users = computed(() => {
+  return userstore.users;
 });
 </script>
 

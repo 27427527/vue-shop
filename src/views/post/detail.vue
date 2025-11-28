@@ -4,26 +4,30 @@ import { usePostStore } from "@/stores/post";
 import { useRoute, RouterLink, RouterView } from "vue-router";
 const route = useRoute();
 const poststore = usePostStore();
-const cate_id = ref(route.query.cate_id);
-poststore.getPostlist(cate_id.value);
+const post_id = ref(route.query.post_id);
+poststore.getPost(post_id.value);
 
-const post_list = computed(() => {
-  return poststore.post_list;
+const post = computed(() => {
+  return poststore.post;
 });
 
 const nav_list = computed(() => {
   return poststore.nav_list;
 });
 
-// 使用 watch 监听 cate_id 的变化
+const cate = computed(() => {
+  return poststore.cate;
+});
+
+// 使用 watch 监听 post_id 的变化
 watch(
-  () => route.query.cate_id,
+  () => route.query.post_id,
   async (newId) => {
     if (newId) {
-      cate_id.value = newId;
-      poststore.getPostlist(newId);
+      post_id.value = newId;
+      poststore.getPost(newId);
     } else {
-      // 处理 cate_id 为空的情况
+      // 处理 post_id 为空的情况
     }
   }
 );
@@ -42,7 +46,7 @@ watch(
             :to="'/post?cate_id=' + item.cate_id"
           >
             <li class="nav-item">
-              <span :class="{ is_active: item.cate_id == cate_id }">{{
+              <span :class="{ is_active: item.cate_id == post.cate_id }">{{
                 item.name
               }}</span>
             </li>
@@ -51,28 +55,16 @@ watch(
       </div>
 
       <div class="content">
-        <div class="article-list">
-          <div
-            v-for="article in post_list"
-            :key="article.post_id"
-            class="article-card"
-          >
-            <router-link :to="'/post/detail?post_id=' + article.post_id">
-              <img
-                :src="$constants.API_BASE_URL + article.image"
-                :alt="article.title"
-                class="article-image"
-              />
-              <div class="article-content">
-                <h3 class="article-title">{{ article.title }}</h3>
-                <div class="article-meta">
-                  <span>本站</span>
-                  <span>{{ article.published_at }}</span>
-                </div>
+        <div class="article-card">
+          <div class="article-content">
+            <h3 class="article-title">{{ post.title }}</h3>
+            <div class="article-meta">
+              <span>作者:本站 {{ $formatDate(post.published_at) }}</span>
 
-                <p class="article-summary">{{ article.excerpt }}</p>
-              </div>
-            </router-link>
+              <span>阅读:{{ post.view_count }}</span>
+            </div>
+
+            <div class="article-detail" v-html="post.content"></div>
           </div>
         </div>
       </div>
@@ -141,9 +133,6 @@ watch(
 }
 
 .article-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
   margin-bottom: 20px;
 }
 .article-card {
@@ -165,15 +154,19 @@ watch(
 .article-content {
   padding: 15px;
 }
+
+.article-detail {
+  margin-top: 30px;
+}
 .article-title {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 24px;
+  font-weight: bold;
   margin-bottom: 10px;
   color: #303133;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  overflow: hidden;
+  text-align: center;
 }
 .article-meta {
   display: flex;
@@ -185,15 +178,7 @@ watch(
 .article-tags {
   margin-bottom: 10px;
 }
-.article-summary {
-  font-size: 14px;
-  color: #606266;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  margin-bottom: 10px;
-}
+
 .article-actions {
   display: flex;
   justify-content: space-between;

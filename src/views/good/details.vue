@@ -6,7 +6,7 @@
 
       <!-- 商品图片区域 -->
       <div class="col-md-6">
-        <Swiper :item="good.images" />
+        <Swiper :item="good.images ? good.images : []" />
       </div>
       <!-- 商品信息区域 -->
       <div class="col-md-6">
@@ -420,7 +420,7 @@ const addToCart = () => {
     good_id: good.value.good_id,
     name: good.value.name,
     price: goodstore.price_list[0],
-    image: "http://lshop/storage/" + good.value.image,
+    image: good.value.image,
     category: JSON.stringify(select_arr.value),
     stock: goodstore.price_list[2],
   };
@@ -439,7 +439,7 @@ const buyNow = () => {
       name: good.value.name,
       quantity: quantity.value,
       price: goodstore.price_list[0],
-      image: "http://lshop/storage/" + good.value.image,
+      image: good.value.image,
       category: select_arr.value,
       stock: goodstore.price_list[2],
     };
@@ -451,9 +451,6 @@ const buyNow = () => {
 };
 </script>
 <style scoped>
-.carousel-container {
-  padding: ;
-}
 .product-image {
   border-radius: 10px;
   overflow: hidden;

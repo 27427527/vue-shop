@@ -60,7 +60,7 @@
                 <div class="card h-100 product-card">
                   <router-link :to="'/good/details?good_id=' + product.good_id">
                     <img
-                      :src="'http://lshop/storage/' + product.image"
+                      :src="$constants.API_BASE_URL + product.image"
                       :alt="product.name"
                       class="card-img-top"
                       style="height: 200px; object-fit: cover"
@@ -147,7 +147,6 @@
 import { ref, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useCart } from "@/composables/useCart.js";
-import { Modal } from "bootstrap";
 import CartItem from "@/components/CartItem.vue";
 import CartSummary from "@/components/CartSummary.vue";
 import { useCartStore } from "@/stores/cart";

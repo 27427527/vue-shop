@@ -12,6 +12,7 @@ export const useGoodStore = defineStore("good", {
     dis_arr: [], //当前禁用价格值
     price_list: [], //所有价格
     good_featured: [], //商品推荐列表页数据
+    good_search: [], //商品搜索列表页数据
     loading: false,
     error: null,
   }),

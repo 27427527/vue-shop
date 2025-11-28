@@ -18,6 +18,9 @@ export const useUserStore = defineStore("user", {
       try {
         const response = await api.get("/user");
         this.users = response.data.user;
+        if (!response.data.user.profile_photo_path) {
+          this.users.profile_photo_url = "/src/assets/image/default-avatar.png";
+        }
         this.address_list = response.data.address_list;
       } catch (err: any) {
         this.error = err.message;
@@ -45,6 +48,8 @@ export const useUserStore = defineStore("user", {
         }
 
         if (response.data.state == 200) {
+          response.data.user.profile_photo_url =
+            "/src/assets/image/default-avatar.png";
           this.users = response.data.user;
           this.auth = true;
         }
@@ -69,6 +74,13 @@ export const useUserStore = defineStore("user", {
 
         if (response.data.state == 200) {
           this.users = response.data.user;
+          this.address_list = response.data.address_list;
+
+          if (!response.data.user.profile_photo_path) {
+            this.users.profile_photo_url =
+              "/src/assets/image/default-avatar.png";
+          }
+
           this.auth = true;
         }
 
@@ -84,11 +96,15 @@ export const useUserStore = defineStore("user", {
         this.auth = false;
         await api.post("/logout");
         localStorage.removeItem("access_token");
+        localStorage.removeItem("user_id");
+        this.users = {};
+        this.address_list = [];
 
         return true;
       } catch (error) {
         console.error("登出失败:", error);
         localStorage.removeItem("access_token"); // 无论如何都清除本地 token
+        localStorage.removeItem("user_id");
         return false;
       }
     },

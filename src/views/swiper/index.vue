@@ -1,12 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
-
-import { Swiper, SwiperSlide } from "swiper/vue";
-import { Navigation, Pagination, Autoplay, EffectFade } from "swiper/modules";
 import { useBannerStore } from "@/stores/banner";
-// Import Swiper styles
-import "swiper/css/bundle";
-const modules = [Autoplay, EffectFade, Navigation];
 
 const bannerstore = useBannerStore();
 
@@ -18,42 +12,32 @@ let state = ref(true);
 <template>
   <div class="container h30"></div>
 
-  <div
-    class="w1320"
-    id="swiper"
-    @mouseover="state = true"
-    @mouseleave="state = false"
-  >
-    <div class="swiper-content">
-      <swiper
-        :modules="modules"
-        :slides-per-view="1"
-        :loop="true"
-        :autoplay="{
-          delay: 3000,
-        }"
-        :Navigation="{
-          nextEl: 'swiper-button-next',
-          prevEl: 'swiper-button-prev',
-        }"
-      >
-        <swiper-slide v-for="(v, i) in swiperlist" :key="i"
-          ><img :src="`http://lshop/storage/${v.image}`"
-        /></swiper-slide>
-      </swiper>
-
-      <div class="swiper-button-prev" v-show="state"></div>
-      <div class="swiper-button-next" v-show="state"></div>
-    </div>
+  <div class="w1320">
+    <el-carousel height="400px" :autoplay="true" :loop="true">
+      <el-carousel-item v-for="item in swiperlist">
+        <img :src="$constants.API_BASE_URL + item.image" />
+      </el-carousel-item>
+    </el-carousel>
   </div>
 </template>
 
 <style scoped>
-.swiper-container {
+.el-carousel__item {
   width: 100%;
+  height: 100%;
 }
 
-.swiper-slide img {
+.el-carousel__item img {
   width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.el-carousel__item:nth-child(2n) {
+  background-color: #99a9bf;
+}
+
+.el-carousel__item:nth-child(2n + 1) {
+  background-color: #d3dce6;
 }
 </style>

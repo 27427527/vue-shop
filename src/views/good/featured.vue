@@ -31,12 +31,12 @@ const good_featured = computed(() => {
         <router-link :to="'/good/details?good_id=' + v.good_id">
           <div class="thumbnail product-card">
             <div class="product-image">
-              <img :src="'http://lshop/storage/' + v.image" :alt="v.name" />
+              <img :src="$constants.API_BASE_URL + v.image" :alt="v.name" />
               <span class="badge badge-sale">热卖</span>
             </div>
             <div class="caption">
               <p>{{ v.name }}</p>
-              <p>6.1英寸超视网膜XDR显示屏，A16仿生芯片</p>
+              <p>{{ v.intro }}</p>
               <div class="price">
                 ¥{{ v.price }}
                 <span class="original-price">¥{{ v.original_price }}</span>

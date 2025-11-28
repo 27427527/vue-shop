@@ -111,22 +111,23 @@ const getStatusText = (status) => {
       <tbody>
         <tr>
           <th>订单信息</th>
-          <th>总金额</th>
-          <th>实付款</th>
-          <th>状态</th>
-          <th>订单操作</th>
+
+          <th>金额</th>
+          <th class="min-hide">状态</th>
+          <th>操作</th>
         </tr>
         <tr v-for="order in order_list" :key="order.order_id" class="order-tr">
           <td>
             <p>
-              {{ dayjs(order.created_at).format("YYYY-MM-DD HH:mm:ss") }}
+              {{ $formatDate(order.created_at) }}
               订单号:{{ order.order_no }}
             </p>
+            <p>收货人:{{ order.name + " " + order.phone }}</p>
 
             <div class="order-details" v-for="item in order.items">
               <div class="item-img">
                 <img
-                  :src="'http://lshop/storage/' + item.image"
+                  :src="$constants.API_BASE_URL + item.image"
                   :alt="item.good_name"
                   class="order-img"
                 />
@@ -140,12 +141,10 @@ const getStatusText = (status) => {
           </td>
 
           <td>
-            {{ order.total_amount }}
-          </td>
-          <td>
             {{ order.pay_amount }}
           </td>
-          <td>
+
+          <td class="min-hide">
             <span :class="['order-status', `status-${order.status}`]">
               {{ getStatusText(order.status) }}
             </span>
@@ -287,6 +286,9 @@ const getStatusText = (status) => {
   }
   .stats-cards {
     grid-template-columns: 1fr 1fr;
+  }
+  .min-hide {
+    display: none;
   }
 }
 @media (max-width: 480px) {

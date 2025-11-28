@@ -9,6 +9,10 @@ const api = axios.create({
 // 请求拦截器 - 自动添加 token
 api.interceptors.request.use(
   (config) => {
+    // 如果是 FormData，自动设置 Content-Type
+    if (config.data instanceof FormData) {
+      config.headers["Content-Type"] = "multipart/form-data";
+    }
     const token = localStorage.getItem("access_token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;

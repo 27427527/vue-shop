@@ -33,6 +33,11 @@ const router = createRouter({
       component: () => import("@/views/good/featured.vue"),
     },
     {
+      path: "/search",
+      name: "search",
+      component: () => import("@/views/good/search.vue"),
+    },
+    {
       path: "/cart",
       name: "cart",
       component: () => import("@/views/cart/index.vue"),
@@ -46,6 +51,33 @@ const router = createRouter({
       path: "/post",
       name: "post",
       component: () => import("@/views/post/index.vue"),
+    },
+
+    {
+      path: "/post/detail",
+      name: "detail",
+      component: () => import("@/views/post/detail.vue"),
+    },
+
+    {
+      path: "/brand",
+      name: "brand",
+      component: () => import("@/views/brand/index.vue"),
+    },
+    {
+      path: "/brand/list",
+      name: "brand_list",
+      component: () => import("@/views/brand/list.vue"),
+    },
+    {
+      path: "/website",
+      name: "web",
+      component: () => import("@/views/website/index.vue"),
+    },
+    {
+      path: "/website/admin",
+      name: "admin",
+      component: () => import("@/views/website/admin.vue"),
     },
     {
       path: "/user",
@@ -61,6 +93,11 @@ const router = createRouter({
           path: "address",
           name: "address",
           component: () => import("@/views/address/index.vue"),
+        },
+        {
+          path: "info",
+          name: "info",
+          component: () => import("@/views/user/info.vue"),
         },
       ],
     },

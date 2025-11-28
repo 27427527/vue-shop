@@ -1,6 +1,6 @@
 <template>
   <div class="carousel-container">
-    <div id="vueCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div id="vueCarousel" class="carousel slide">
       <div class="carousel-indicators">
         <button
           v-for="(slide, index) in item"
@@ -20,7 +20,7 @@
           class="carousel-item"
           :class="{ active: currentIndex === index }"
         >
-          <img :src="'http://lshop/storage/' + slide" class="d-block w-100" />
+          <img :src="$constants.API_BASE_URL + slide" class="d-block w-100" />
           <div class="carousel-caption"></div>
         </div>
       </div>
@@ -37,7 +37,7 @@
     <div class="row mt-3">
       <div v-for="(image, index) in item" :key="index" class="col-3">
         <img
-          :src="'http://lshop/storage/' + image"
+          :src="$constants.API_BASE_URL + image"
           class="img-thumbnail"
           :class="{ active: index === 0 }"
           style="cursor: pointer; height: 80px; object-fit: cover"
@@ -77,8 +77,7 @@ const props = defineProps({
     required: true,
   },
 });
-
-import { Carousel } from "bootstrap";
+import { Carousel } from "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 const currentIndex = ref(0);
 

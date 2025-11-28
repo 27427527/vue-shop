@@ -1,32 +1,13 @@
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
-import { useBrandStore } from "@/stores/brand";
+import { useGoodStore } from "@/stores/good";
 import { useRoute } from "vue-router";
 const route = useRoute();
-const brandstore = useBrandStore();
-const cate_id = ref(route.query.cate_id);
-brandstore.getBrands(cate_id.value);
+const goodstore = useGoodStore();
 
-const brand_list = computed(() => {
-  return brandstore.brand_list;
+const good_search = computed(() => {
+  return goodstore.good_search;
 });
-
-const nav_list = computed(() => {
-  return brandstore.nav_list;
-});
-
-// 使用 watch 监听 cate_id 的变化
-watch(
-  () => route.query.cate_id,
-  async (newId) => {
-    if (newId) {
-      cate_id.value = newId;
-      brandstore.getBrands(newId);
-    } else {
-      // 处理 cate_id 为空的情况
-    }
-  }
-);
 </script>
 
 <template>
@@ -40,17 +21,7 @@ watch(
             <router-link to="/"> 首页 </router-link>
           </li>
 
-          <li class="" v-for="(v, i) in nav_list" :key="v.cate_id">
-            <i> /</i>
-
-            <template v-if="v.level == '1'"> {{ v.name }}</template>
-
-            <template v-else>
-              <router-link :to="nav_list[0].slug + '?cate_id=' + v.cate_id"
-                >{{ v.name }}
-              </router-link>
-            </template>
-          </li>
+          <li><i> /</i> 搜索结果</li>
         </ol>
       </div>
     </div>
@@ -60,18 +31,22 @@ watch(
 
       <div
         class="col-lg-2 col-md-3 col-sm-6"
-        v-for="(v, i) in brand_list"
-        :key="v.brand_id"
+        v-for="(v, i) in good_search"
+        :key="v.good_id"
       >
-        <router-link :to="'/brand/list?brand_id=' + v.brand_id">
+        <router-link :to="'/good/details?good_id=' + v.good_id">
           <div class="thumbnail product-card">
             <div class="product-image">
               <img :src="$constants.API_BASE_URL + v.image" :alt="v.name" />
+              <span class="badge badge-sale">热卖</span>
             </div>
             <div class="caption">
               <p>{{ v.name }}</p>
-
-              <p class="intro">{{ v.description }}</p>
+              <p>{{ v.intro }}</p>
+              <div class="price">
+                ¥{{ v.price }}
+                <span class="original-price">¥{{ v.original_price }}</span>
+              </div>
 
               <!-- <div class="rating">
                 <i class="iconfont" style="color: #ffc107">&#xe730;</i>
@@ -130,6 +105,12 @@ p {
   color: @breadcrumb-active-color;
 }
 
+.good-featured {
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 30px;
+}
+
 h4 {
   color: #000;
 }
@@ -138,12 +119,12 @@ h4 {
   transition: all 0.3s ease;
   border-radius: 12px;
   padding: 15px;
-  box-shadow: 3px 2px 4px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 .product-card:hover {
   transform: translateY(-5px);
-  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
-  border: 1px solid #ececec;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  border: 1px solid #f55000;
 }
 .product-image {
   background: #f8f9fa;
@@ -155,13 +136,17 @@ h4 {
 .product-image img {
   aspect-ratio: 1;
   max-width: 100%;
-  width: 100%;
 }
-.intro {
-  color: #333;
+.price {
+  color: #ff6200;
   font-size: 14px;
+  font-weight: bold;
 }
-
+.original-price {
+  text-decoration: line-through;
+  color: #999;
+  margin-left: 10px;
+}
 .badge-sale {
   background: #e74c3c;
   position: absolute;

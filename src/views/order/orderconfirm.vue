@@ -26,7 +26,10 @@
           <div class="product-list">
             <div class="product-item" v-for="item in products" :key="item.id">
               <div class="product-image">
-                <img :src="item.image" :alt="item.name" />
+                <img
+                  :src="$constants.API_BASE_URL + item.image"
+                  :alt="item.name"
+                />
               </div>
               <div class="product-info">
                 <div class="product-name">{{ item.name }}</div>
@@ -236,7 +239,9 @@ async function creatOrder(order) {
         clearCartComposable();
       }
       ElMessage.success("订单提交成功！");
-      rs = response.data;
+      // rs = response.data;
+
+      router.push("/user/order");
     })
     .catch((error) => {
       // 错误处理

@@ -4,7 +4,11 @@
       <div class="row align-items-center">
         <!-- 商品图片 -->
         <div class="col-md-2">
-          <img :src="item.image" :alt="item.name" class="img-fluid rounded" />
+          <img
+            :src="$constants.API_BASE_URL + item.image"
+            :alt="item.name"
+            class="img-fluid rounded"
+          />
         </div>
 
         <!-- 商品信息 -->
